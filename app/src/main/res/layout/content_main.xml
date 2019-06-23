@@ -33,6 +33,7 @@
         android:digits="0123456789"
         android:inputType="number" />
 
+    <!--
     <Button
         android:id="@+id/btnJogos"
         android:layout_width="wrap_content"
@@ -43,7 +44,7 @@
         android:background="#1976D2"
         android:text="@string/btnJogo"
         android:textColor="#FFFFFF"
-        tools:text="@string/btnJogo" />
+        tools:text="@string/btnJogo" /> -->
 
     <ScrollView
         android:layout_width="match_parent"
