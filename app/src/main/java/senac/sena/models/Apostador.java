@@ -7,41 +7,35 @@ import java.util.ArrayList;
 
 public class Apostador implements Parcelable {
     ArrayList<Aposta> apostas;
-    int qtdApostas;
-    int qtdNumerosPorAposta;
+    ArrayList<Integer> qtdNumerosPorAposta;
 
-    public Apostador() {
+    public Apostador(ArrayList<Integer> qtdNumerosPorAposta) {
+        this.qtdNumerosPorAposta = qtdNumerosPorAposta;
         apostas = new ArrayList<>();
     }
+
     public ArrayList<Aposta> getApostas() {
         return apostas;
     }
 
-    public int getQtdApostas() {
-        return qtdApostas;
-    }
-
-    public int getQtdNumerosPorAposta() {
+    public ArrayList<Integer> getQtdNumerosPorAposta() {
         return qtdNumerosPorAposta;
     }
 
-    public void setApostas(){
+    public void setApostas() {
         Aposta novo;
-        for (int i = 0; i < this.qtdApostas; i++) {
+        for (Integer n : this.qtdNumerosPorAposta){
             novo = new Aposta();
-            novo.setQtdNumeros(this.qtdNumerosPorAposta);
+            novo.setQtdNumeros(n.intValue());
             novo.setNumeros();
             this.apostas.add(novo);
         }
     }
 
-    public void setQtdApostas(int qtdApostas) {
-        this.qtdApostas = qtdApostas;
-    }
-
-    public void setQtdNumerosPorAposta(int qtdNumerosPorAposta) {
+    public void setQtdNumerosPorAposta(ArrayList<Integer> qtdNumerosPorAposta) {
         this.qtdNumerosPorAposta = qtdNumerosPorAposta;
     }
+
 
     @Override
     public int describeContents() {
@@ -51,15 +45,13 @@ public class Apostador implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeTypedList(this.apostas);
-        dest.writeInt(this.qtdApostas);
-        dest.writeInt(this.qtdNumerosPorAposta);
+        dest.writeList(this.qtdNumerosPorAposta);
     }
-
 
     protected Apostador(Parcel in) {
         this.apostas = in.createTypedArrayList(Aposta.CREATOR);
-        this.qtdApostas = in.readInt();
-        this.qtdNumerosPorAposta = in.readInt();
+        this.qtdNumerosPorAposta = new ArrayList<Integer>();
+        in.readList(this.qtdNumerosPorAposta, Integer.class.getClassLoader());
     }
 
     public static final Creator<Apostador> CREATOR = new Creator<Apostador>() {

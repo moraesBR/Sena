@@ -1,5 +1,6 @@
 package senac.sena;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import senac.sena.adapters.CustomAdapter;
+import senac.sena.models.Apostador;
 import senac.sena.models.EditModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     Button btnNumeros;
     RecyclerView rvNumeros;
     public ArrayList<EditModel> editModelArrayList;
+    private ArrayList<Integer> qtdNumeros;
+    private Apostador apostador;
 
 
     @Override
@@ -63,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 editModelArrayList = new ArrayList<>();
                 for(int j=0; j < quantidade; j++) {
                     EditModel t = new EditModel();
-                    t.setTextViewValue("Jogo ["+(j+1)+"]: ");
+                    t.setTextViewValue("Jogo ["+(j+1)+"]:");
                     t.setValid(true);
                     editModelArrayList.add(t);
                 }
@@ -94,13 +98,23 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View view){
             try{
+                qtdNumeros = new ArrayList<>();
                 for (EditModel e: editModelArrayList){
-                    int num = Integer.parseInt(e.getEditTextValue());
                     if(!e.isValid()) throw new Exception("");
+                    qtdNumeros.add(Integer.valueOf(e.getEditTextValue()));
                 }
+                apostador = new Apostador(qtdNumeros);
+                apostador.setApostas();
+
+
+                Intent activity_aposta = new Intent(getBaseContext(),activity_aposta.class);
+                activity_aposta.putExtra("apostador",apostador);
+                startActivity(activity_aposta);
+
             }
             catch(Exception ex){
-                Snackbar.make(view, "Erro!", Snackbar.LENGTH_LONG)
+                System.out.println(ex.getMessage());
+                Snackbar.make(view, ex.getMessage(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
 
